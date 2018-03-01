@@ -27,8 +27,8 @@ function displayAll(){
 // The first should ask them the ID of the product they would like to buy.
 // The second message should ask how many units of the product they would like to buy
 function start(res) {
-  console.log("all products");
-  console.log(res.length);
+  // console.log("all products");
+  // console.log(res.length);
   inquirer
   .prompt({
     name: "item",
@@ -42,30 +42,34 @@ function start(res) {
         // var item = res[i];
         itemArray.push(itemLine);
       }
-      console.log(itemArray);
+      // console.log(itemArray);
       return itemArray   
     }
   })
   .then(function(answer){
-    console.log("answer is " + answer);
+    // console.log("answer is " + answer);
     var itemParts = answer.item.split(" ");
-    itemID = itemParts[0];
+    var itemID = itemParts[0];
 
     inquirer
       .prompt({
           name: "quantity",
           type: "input",
           message: "how many would you like to buy?",
+
         })
    })
-  .then(function(response){})
+  .then(function(response){
+    // check stock quantity here through sql
+    var newValue = response;    // need to update the stock quantity by subtracting the order quantity 
+   if (newValue) {
+      //   // here is where we are going to do update to the product table for this item
+     connection.query('UPDATE products SET ? WHERE itemID = ?', [{ stock_quantity: oldValue - newValue }, itemID]);
+      console.log("here is your item, wanna select another item?")
+    //  displayAll();
+   } else {
+    console.log("")
   }
-
-  //   // here is where we are going to do update to the product table for this item
-  //   // var itemID = 
-  //   // need to update the stock quantity by subtracting the order quantity 
-  //   // and uspdate the product sales by adding (order qty x price)
-
-  // })
-
+  })
+}
 
